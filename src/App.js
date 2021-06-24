@@ -3,15 +3,10 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import AppHeader from './components/AppHeader'
 import Eventlite from './components/Eventlite'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-
-const currentUser = function() {
-  const user = localStorage.getItem('user')
-  console.log(user)
-  return(user)
-}
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 function App() {
+  const currentUser = localStorage.getItem('user')
   return (
     <Router>
       <Route path='/' >
@@ -21,10 +16,10 @@ function App() {
         <Eventlite />
       </Route>
       <Route exact path='/login'>
-        <Login />
+        {currentUser ? <Redirect to="/" /> : <Login />}
       </Route>
       <Route exact path='/signup'>
-        <Signup />
+        {currentUser ? <Redirect to="/" /> : <Signup />}
       </Route>
     </Router>
   );
