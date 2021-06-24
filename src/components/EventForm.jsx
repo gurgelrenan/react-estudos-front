@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Event from './Event'
+import EventSummary from './EventSummary'
 
 const EventForm = props => (
   <div>
