@@ -1,43 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 const formatDate = datetime =>
   new Date(datetime).toDateString()
 
-class Event extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      event: {}
-    }
-  }
+const Event = (props) => {
+  const [event, setEvent] = useState({})
 
-  componentDidMount() {
-    if (this.props.match) {
-      console.log(this.props.match)
-      axios({
-        method: "GET",
-        url: `http://localhost:3001/events/${this.props.match.params.id}`,
-        headers: JSON.parse(localStorage.getItem('user'))
-      }).then((response) => {
-        this.setState({event: response.data})
-      })
-    }
-  }
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `http://localhost:3001/events/${props.match.params.id}`,
+      headers: JSON.parse(localStorage.getItem('user'))
+    }).then((response) => {
+        setEvent(response.data)
+    });
+  }, [])
 
-  render() {
-    return(
-      <div className="event">
-        {this.state.event.currentUserCanEdit && <Link to={`/events/${this.props.match.params.id}/edit`}>Edit</Link>}
-        {this.state.event.image_url && <img src={this.state.event.image_url} />}
-        <h2 className="event-title">{this.state.event.title}</h2>
-        <div className="event-datetime">{formatDate(this.state.event.start_datetime)}</div>
-        <div className="event-location">{this.state.event.location}</div>
-        <div className="event-description">{this.state.event.description}</div>
-      </div>
-    )
-  }
+  return(
+    <div className="event">
+      {event.currentUserCanEdit && 
+        <Link to={`/events/${props.match.params.id}/edit`}>
+          Edit
+        </Link>
+      }
+      <h2 className="event-title">{event.title}</h2>
+      <div className="event-datetime">{formatDate(event.start_datetime)}</div>
+      <div className="event-location">{event.location}</div>
+      <div className="event-description">{event.description}</div>
+    </div>
+  )
 }
 
 export default Event
