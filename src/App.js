@@ -4,6 +4,7 @@ import Signup from './components/Signup'
 import AppHeader from './components/AppHeader'
 import Eventlite from './components/Eventlite'
 import Event from './components/Event'
+import EventForm from './components/EventForm'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 function App() {
@@ -24,6 +25,11 @@ function App() {
       </Route>
       <Route exact path="/events/:id" render={routeProps => (
         <Event {...routeProps} />
+      )} />
+      <Route exact path="/events/:id/edit" render={routeProps => (
+        currentUser ?
+        <EventForm {...routeProps} /> :
+        <Redirect to="/login" />
       )} />
     </Router>
   );
